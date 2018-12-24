@@ -1,6 +1,7 @@
 import { Guid } from "guid-typescript";
+import IPackageInfo from "./IPackageInfo";
 
-export default class Package {
+export default class Package implements IPackageInfo {
 
     private id: Guid;
     private firstName: string;
