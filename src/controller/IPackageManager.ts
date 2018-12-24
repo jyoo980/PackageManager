@@ -1,3 +1,5 @@
+import {Guid} from "guid-typescript";
+
 export class PackageError extends Error {
     constructor(...args: any[]) {
         super(...args);
@@ -11,7 +13,7 @@ export class InvalidPersonError extends Error {
 }
 
 export interface IPackageData {
-    id: string,
+    id: Guid,
     firstName: string,
     lastName: string,
     arrivalDate: Date,

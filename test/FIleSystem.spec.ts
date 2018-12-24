@@ -28,7 +28,7 @@ describe("FileSystem Tests", () => {
     it("Should return the root directory", () => {
         const rootDir: string = fileSystem.getRoot();
         expect(rootDir).to.equal(testRootPath);
-    })
+    });
 
     it("Should throw a FileSystemError when attempting to read a non-existent file", async () => {
         const fileName: string = "foo.txt";
