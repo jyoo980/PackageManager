@@ -28,7 +28,37 @@ describe("PersonValidator Tests", () => {
             Log.warn("Failed to load people from directory");
             loadedPeople = err;
         } finally {
-            // TODO: finish this test
+            for (const person of loadedPeople) {
+                expect(person).to.be.instanceOf(Person);
+            }
+        }
+    });
+
+    it("Should return true for a valid person", async () => {
+        const firstName: string = "Steven";
+        const lastName: string = "Kim";
+        let isValidPerson: boolean;
+
+        try {
+            isValidPerson = await validator.isValidPerson(firstName, lastName);
+        } catch (err) {
+            Log.warn("Failed to successfully validate a person");
+            isValidPerson = err;
+        } finally {
+            expect(isValidPerson).to.be.true;
+        }
+    });
+
+    it("Should not return true for an invalid person", async () => {
+        let isValidPerson: boolean;
+
+        try {
+            isValidPerson = await validator.isValidPerson("Not", "AValidPerson");
+        } catch (err) {
+            Log.warn("Failed to successfully validate a person");
+            isValidPerson = err;
+        } finally {
+            expect(isValidPerson).to.be.false;
         }
     });
 

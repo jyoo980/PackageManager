@@ -1,6 +1,8 @@
-import FileSystem, {FileSystemError} from "./FileSystem";
 import Person from "./Person";
 import Log from "../Util";
+import Package from "./Package";
+import {Guid} from "guid-typescript";
+import FileSystem from "./FileSystem";
 
 export default class PersonValidator {
 
@@ -12,7 +14,20 @@ export default class PersonValidator {
         this.validPeople = [];
     }
 
-    public isValidPerson(firstName: string, lastName: string): boolean {
+    public async isValidPerson(firstName: string, lastName: string): Promise<boolean> {
+        if (this.validPeople.length === 0) {
+            try {
+                await this.loadValidPeople();
+            } catch (err) {
+                Log.warn(err);
+                return false;
+            }
+        }
+        for (const person of this.validPeople) {
+            if (person.getFirstName() === firstName && person.getLastName() === lastName) {
+                return true;
+            }
+        }
         return false;
     }
 
@@ -37,9 +52,20 @@ export default class PersonValidator {
 
     private createPerson(personJson: any): Person {
         const nameArray: string[] = personJson.name.split(" ");
-        // TODO: additional processing if they have objects
-        return new Person(nameArray[0], nameArray[1]);
+        const packageArray: any[] = personJson.packages;
+        let person = new Person(nameArray[0], nameArray[1]);
+        if (packageArray.length != 0) {
+            this.readPackages(person, packageArray);
+        }
+        return person;
     }
 
+    private readPackages(person: Person, packageArray: any[]) {
+        for (const p of packageArray) {
+            const pkgGuid: Guid = Guid.parse(p.id);
+            const readPackage = new Package(person.getFirstName(), person.getLastName(), pkgGuid, p.arrivalDate, p.pickupDate);
+            person.addPackage(readPackage);
+        }
+    }
 
 }
