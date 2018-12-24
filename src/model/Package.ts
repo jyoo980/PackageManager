@@ -1,12 +1,12 @@
 import { Guid } from "guid-typescript";
-import IPackageInfo from "./IPackageInfo";
+import IPackage from "./interfaces/IPackage";
 
-export default class Package implements IPackageInfo {
+export default class Package implements IPackage {
 
-    private id: Guid;
-    private firstName: string;
-    private lastName: string;
-    private arrivalDate: string;
+    private readonly id: Guid;
+    private readonly firstName: string;
+    private readonly lastName: string;
+    private readonly arrivalDate: string;
     private pickupDate: string;
 
     constructor(firstName: string, lastName: string) {
