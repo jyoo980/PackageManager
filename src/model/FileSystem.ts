@@ -32,6 +32,20 @@ export default class FileSystem {
         });
     }
 
+    public writeFile(name: string, content: any): any {
+        const path: string = this.constructPath(name);
+        const dataToWrite = JSON.stringify(content);
+        return new Promise((resolve, reject) => {
+            fs.writeFile(path, dataToWrite, (err) => {
+                if (!err) {
+                    resolve(dataToWrite);
+                } else {
+                    reject(new FileSystemError(err));
+                }
+            });
+        });
+    }
+
     private constructPath(fileName: string): string {
         return this.fileSystemRoot + "/" + fileName;
     }

@@ -4,7 +4,7 @@ import Package from "./Package";
 import {Guid} from "guid-typescript";
 import FileSystem from "./FileSystem";
 
-export default class PersonValidator {
+export default class PersonManager {
 
     private readonly fileSystem: FileSystem = new FileSystem("./data");
     private readonly validPeople: Person[];

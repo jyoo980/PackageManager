@@ -55,4 +55,18 @@ describe("FileSystem Tests", () => {
         }
     });
 
+    it("Should write a file successfully to disk", async () => {
+        const dataAsJson: any = {"foo": [1, 2, 3], "bar": "2"};
+        let writeResult: any;
+        const fileName: string = "test_write.json";
+        try {
+            writeResult = await fileSystem.writeFile(fileName, dataAsJson);
+        } catch (err) {
+            writeResult = err;
+            expect.fail("FileSystemSpec::Writing a new file to disk should not have failed");
+        } finally {
+            expect(writeResult).to.equal(JSON.stringify(dataAsJson));
+        }
+    })
+
 });
