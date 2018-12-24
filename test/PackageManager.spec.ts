@@ -1,5 +1,5 @@
 import {expect} from "chai";
-import {IPackageManager, PackageError} from "../src/controller/IPackageManager";
+import {InvalidPersonError, IPackageManager, PackageError} from "../src/controller/IPackageManager";
 import Log from "../src/Util";
 import PackageManager from "../src/controller/PackageManager";
 
@@ -65,6 +65,19 @@ describe("PackageManagerFacade Tests", () => {
             packageIds = err;
         } finally {
             expect(packageIds).to.be.instanceOf(PackageError);
+        }
+    });
+
+    it("Should return an InvalidPersonError when a package is added for an unknown person", async () => {
+        const first: string = "Not";
+        const last: string = "ValidPerson";
+        let packageIds: string[] = [];
+        try {
+            packageIds = await managerFacade.addPackage(first, last);
+        } catch (err) {
+            packageIds = err;
+        } finally {
+            expect(packageIds).to.be.instanceOf(InvalidPersonError);
         }
     });
 

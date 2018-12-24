@@ -4,6 +4,12 @@ export class PackageError extends Error {
     }
 }
 
+export class InvalidPersonError extends Error {
+    constructor(...args: any[]) {
+        super(...args);
+    }
+}
+
 export interface IPackageData {
     id: string,
     firstName: string,
@@ -23,6 +29,7 @@ export interface IPackageManager {
      *
      * If addition is successful, it should resolve with a promise with an array containing the ids of all
      * packages contained within this instance of package manager.
+     * If person does not belong to the list of valid people, reject with InvalidPersonError
      *
      */
     addPackage(firstName: string, lastName: string): Promise<string[]>;
@@ -37,9 +44,15 @@ export interface IPackageManager {
     pickupPackage(id: string): Promise<string>;
 
     /**
-     * Lists the packages which are already contained within this instance of package manager
+     * Lists the packages belonging to a person with the given first and last name
      *
-     * @returns Promise<IPackageManager[]>
+     * @param firstName
+     * @param lastName
+     *
+     * @return Promise<IPackageData[]>
+     *
+     * Should return with a list of packages belonging to a person with the given first and last name.
+     * If person does not belong to the list of valid people, reject with InvalidPersonError
      */
-    listPackages(): Promise<IPackageData[]>;
+    listPackages(firstName?: string, lastName?: string): Promise<IPackageData[]>;
 }

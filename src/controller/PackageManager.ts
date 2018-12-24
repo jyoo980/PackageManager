@@ -6,11 +6,11 @@ export default class PackageManager implements IPackageManager {
         return Promise.reject("Not Implemented");
     }
 
-    public listPackages(): Promise<IPackageData[]> {
+    public pickupPackage(id: string): Promise<string> {
         return Promise.reject("Not Implemented");
     }
 
-    public pickupPackage(id: string): Promise<string> {
+    listPackages(firstName?: string, lastName?: string): Promise<IPackageData[]> {
         return Promise.reject("Not Implemented");
     }
 
