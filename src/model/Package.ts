@@ -36,8 +36,9 @@ export default class Package {
         return new Date(this.pickupDate);
     }
 
-    public setPickupDate(date: Date) {
+    public setPickupDate(date: Date): string {
         this.pickupDate = date.toLocaleString();
+        return this.pickupDate;
     }
 
 }
