@@ -1,8 +1,0 @@
-{
-  "name": "PackageManager",
-  "version": "1.0.0",
-  "description": "a package manager",
-  "main": "index.js",
-  "author": "James Yoo",
-  "license": "MIT"
-}

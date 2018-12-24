@@ -1,3 +1,9 @@
+export class PackageError extends Error {
+    constructor(...args: any[]) {
+        super(...args);
+    }
+}
+
 export interface IPackageData {
     id: string,
     firstName: string,
@@ -6,7 +12,7 @@ export interface IPackageData {
     pickupDate?: Date
 }
 
-export interface IPackageData {
+export interface IPackageManager {
 
     /**
      * Adds a package to this package manager
@@ -33,7 +39,7 @@ export interface IPackageData {
     /**
      * Lists the packages which are already contained within this instance of package manager
      *
-     * @returns Promise<IPackageData[]>
+     * @returns Promise<IPackageManager[]>
      */
     listPackages(): Promise<IPackageData[]>;
 }
