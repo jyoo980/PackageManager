@@ -14,5 +14,5 @@ export default interface IObserver {
      *
      * @return boolean
      */
-    update(subject: Person, pkg: IPackage): boolean;
+    update(subject: Person, pkg: IPackage): Promise<boolean>;
 }
