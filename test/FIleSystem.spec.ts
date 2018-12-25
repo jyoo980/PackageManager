@@ -6,6 +6,7 @@ describe("FileSystem Tests", () => {
 
     let fileSystem: FileSystem;
     const testRootPath: string = "./test/data";
+    const fileToWrite: string = "test_write.json";
     const storedData: any = {
         "apple": 1,
         "foo": "abc",
@@ -25,9 +26,25 @@ describe("FileSystem Tests", () => {
         }
     });
 
+    after(async () => {
+
+        try {
+            await FileSystem.deleteFile(fileToWrite, testRootPath);
+        } catch (err) {
+            Log.warn(`FileSystemSpec::Teardown failed with err: ${err}`);
+            expect.fail(`FileSystemSpec::Teardown failed with err: ${err}`);
+        }
+    });
+
     it("Should return the root directory", () => {
         const rootDir: string = fileSystem.getRoot();
         expect(rootDir).to.equal(testRootPath);
+    });
+
+    it("Should be able to set the root directory", () => {
+        const newRoot: string = "./rootDirNew";
+        expect(fileSystem.setRoot(newRoot)).to.equal(newRoot);
+        expect(fileSystem.setRoot(testRootPath)).to.equal(testRootPath);
     });
 
     it("Should throw a FileSystemError when attempting to read a non-existent file", async () => {
@@ -58,15 +75,41 @@ describe("FileSystem Tests", () => {
     it("Should write a file successfully to disk", async () => {
         const dataAsJson: any = {"foo": [1, 2, 3], "bar": "2"};
         let writeResult: any;
-        const fileName: string = "test_write.json";
         try {
-            writeResult = await fileSystem.writeFile(fileName, dataAsJson);
+            writeResult = await fileSystem.writeFile(fileToWrite, dataAsJson);
         } catch (err) {
             writeResult = err;
             expect.fail("FileSystemSpec::Writing a new file to disk should not have failed");
         } finally {
             expect(writeResult).to.equal(JSON.stringify(dataAsJson));
         }
-    })
+    });
+
+    it("Should be able to read a file that has been written to disk", async () => {
+        const dataAsJson: any = {"foo": [1, 2, 3], "bar": "2"};
+        let readResult: any;
+        try {
+            readResult = await fileSystem.readFile(fileToWrite);
+        } catch (err) {
+            Log.warn("FileSystemSpec::Was not able to read file written to disk");
+            readResult = err;
+        } finally {
+            expect(readResult).to.deep.equal(dataAsJson);
+        }
+    });
+
+    it("Should be able to modify a file after it has been written", async () => {
+        const modifiedData: any = {"foo": [1, 2, 2.5, 3], "bar": "2", "baz": 1};
+        let readResult: any;
+        try {
+            await fileSystem.writeFile(fileToWrite, modifiedData);
+            readResult = await fileSystem.readFile(fileToWrite);
+        } catch (err) {
+            Log.warn("FileSystemSpec::Was not able to modify data written to disk");
+            readResult = err;
+        } finally {
+            expect(readResult).to.deep.equal(modifiedData);
+        }
+    });
 
 });

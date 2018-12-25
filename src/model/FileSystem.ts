@@ -8,13 +8,18 @@ export class FileSystemError extends Error {
 
 export default class FileSystem {
 
-    private readonly fileSystemRoot: string;
+    private fileSystemRoot: string;
 
     constructor(rootPath: string) {
         this.fileSystemRoot = rootPath;
     }
 
     public getRoot(): string {
+        return this.fileSystemRoot;
+    }
+
+    public setRoot(newRoot: string): string {
+        this.fileSystemRoot = newRoot;
         return this.fileSystemRoot;
     }
 
@@ -32,7 +37,7 @@ export default class FileSystem {
         });
     }
 
-    public writeFile(name: string, content: any): any {
+    public writeFile(name: string, content: any): Promise<string> {
         const path: string = this.constructPath(name);
         const dataToWrite = JSON.stringify(content);
         return new Promise((resolve, reject) => {
@@ -41,6 +46,19 @@ export default class FileSystem {
                     resolve(dataToWrite);
                 } else {
                     reject(new FileSystemError(err));
+                }
+            });
+        });
+    }
+
+    public static deleteFile(name: string, rootDir: string): Promise<boolean>  {
+        const path: string = rootDir + "/" + name;
+        return new Promise((resolve, reject) => {
+            fs.unlink(path, (err) => {
+                if (!err) {
+                    resolve(true);
+                } else {
+                    reject(err);
                 }
             });
         });

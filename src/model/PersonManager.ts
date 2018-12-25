@@ -63,9 +63,8 @@ export default class PersonManager {
     private readPackages(person: Person, packageArray: any[]) {
         for (const p of packageArray) {
             const pkgGuid: Guid = Guid.parse(p.id);
-            const readPackage = new Package(person.getFirstName(), person.getLastName(), pkgGuid, p.arrivalDate, p.pickupDate);
+            const readPackage = new Package(person, pkgGuid, p.arrivalDate, p.pickupDate);
             person.addPackage(readPackage);
         }
     }
-
 }
