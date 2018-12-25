@@ -1,13 +1,15 @@
 import IPackage, {DuplicatePackageError} from "./interfaces/IPackage";
 import {Guid} from "guid-typescript";
+import Subject from "./Subject";
 
-export default class Person {
+export default class Person extends Subject {
 
     private readonly firstName: string;
     private readonly lastName: string;
     private packages: IPackage[];
 
     constructor(firstName: string, lastName: string) {
+        super();
         this.firstName = firstName;
         this.lastName = lastName;
         this.packages = [];
@@ -26,17 +28,17 @@ export default class Person {
     }
 
     public addPackage(pkg: IPackage): IPackage[] {
-        const idToAdd: Guid = pkg.getId();
-        const packageIds: Guid[] = this.getPackageIds();
-        if (!packageIds.includes(idToAdd)) {
+        if (!this.packages.includes(pkg)) {
             this.packages.push(pkg);
             return this.packages;
         } else {
-            throw new DuplicatePackageError(`Package with id: ${idToAdd} already exists`);
+            throw new DuplicatePackageError(`Package with id: ${pkg.getId()} already exists`);
         }
     }
 
-    private getPackageIds(): Guid[] {
-        return this.packages.map(p => p.getId());
+    public notifyObservers(pkg: IPackage): void {
+        for (const observer of this.observers) {
+            observer.update(this, pkg);
+        }
     }
 }

@@ -1,47 +1,19 @@
 import {expect} from "chai";
-import Package from "../src/model/Package";
 import {Guid} from "guid-typescript";
 import Person from "../src/model/Person";
 import Log from "../src/Util";
 import IPackage, {DuplicatePackageError} from "../src/model/interfaces/IPackage";
-
-class MockPackage implements IPackage {
-
-    private readonly id: Guid;
-    private readonly testDate: Date;
-
-    constructor(id: Guid, testDate: Date) {
-        this.id = id;
-        this.testDate = testDate;
-    }
-
-    public getArrivalDate(): Date {
-        return this.testDate;
-    }
-
-    public getFirstName(): string {
-        return "Mock";
-    }
-
-    public getId(): Guid {
-        return this.id;
-    }
-
-    public getLastName(): string {
-        return "Package";
-    }
-
-    public getPickupDate(): Date {
-        return this.testDate;
-    }
-
-}
+import {MockPackage} from "./mocks/MockPackage";
+import IObserver from "../src/model/interfaces/IObserver";
+import {MockObserver} from "./mocks/MockObserver";
+import {DuplicateObserverError} from "../src/model/Subject";
 
 describe("Person Tests", () => {
 
     let person: Person;
     const testPkg1: IPackage = new MockPackage(Guid.create(), new Date());
     const testPkg2: IPackage = new MockPackage(Guid.create(), new Date());
+    const obs: IObserver = new MockObserver();
     const firstName: string = "John";
     const lastName: string = "Smith";
 
@@ -100,4 +72,23 @@ describe("Person Tests", () => {
         expect(person.getPackages()).to.deep.equal(addedPackages);
     });
 
+    it("Should add an observer to its list of observers", () => {
+        let result: IObserver[] = [obs];
+        expect(person.registerObserver(obs)).to.deep.equal(result);
+    });
+
+    it("Should not add an observer which has already been added", () => {
+        let result: IObserver[];
+        try {
+            result = person.registerObserver(obs);
+        } catch (err) {
+            result = err;
+        } finally {
+            expect(result).to.be.instanceOf(DuplicateObserverError);
+        }
+    });
+
+    it("Should be able to deregister an observer after adding it", () => {
+        expect(person.deregisterObserver(obs)).to.deep.equal([]);
+    });
 });

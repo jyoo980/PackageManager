@@ -11,9 +11,13 @@ export default abstract class Subject {
 
     protected observers: IObserver[];
 
-    abstract notifyObservers(firstName: string, lastName: string, pkg: IPackage): void;
+    protected constructor() {
+        this.observers = [];
+    }
 
-    protected registerObserver(obs: IObserver): IObserver[] {
+    abstract notifyObservers(pkg: IPackage): void;
+
+    public registerObserver(obs: IObserver): IObserver[] {
         if (!this.observers.includes(obs)) {
             this.observers.push(obs);
             return this.observers;
@@ -21,7 +25,7 @@ export default abstract class Subject {
         throw new DuplicateObserverError("Subject::Attempted to add duplicate observer");
     }
 
-    private deregisterObserver(obs: IObserver): IObserver[] {
+    public deregisterObserver(obs: IObserver): IObserver[] {
         this.observers = this.observers.filter((observer) => {
             return observer !== obs;
         });
