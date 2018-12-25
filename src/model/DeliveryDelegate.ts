@@ -24,11 +24,4 @@ export default class DeliveryDelegate {
         return this.deliveryFileName;
     }
 
-
-
-
-
-
-
-
 }
