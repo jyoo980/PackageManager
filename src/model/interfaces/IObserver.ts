@@ -1,6 +1,12 @@
 import IPackage from "./IPackage";
 import Person from "../Person";
 
+export class NotificationError extends Error {
+    constructor(...args: any[]) {
+        super(...args);
+    }
+}
+
 export default interface IObserver {
 
     /**

@@ -4,7 +4,7 @@ import Person from "../../src/model/Person";
 
 export class MockObserver implements IObserver {
 
-    public update(person: Person, pkg: IPackage): boolean {
-        return true;
+    public update(person: Person, pkg: IPackage): Promise<boolean> {
+        return Promise.resolve(true);
     }
 }

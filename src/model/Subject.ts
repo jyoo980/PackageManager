@@ -15,7 +15,7 @@ export default abstract class Subject {
         this.observers = [];
     }
 
-    abstract notifyObservers(pkg: IPackage): void;
+    abstract notifyObservers(pkg: IPackage): Promise<boolean>;
 
     public registerObserver(obs: IObserver): IObserver[] {
         if (!this.observers.includes(obs)) {
