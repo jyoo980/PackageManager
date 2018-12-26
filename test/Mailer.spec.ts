@@ -40,7 +40,7 @@ describe("Mailer Tests", () => {
 
     it("Should throw a NotificationSendError for an invalid email address", async () => {
         const tstPkg: MockPackage = new MockPackage(Guid.create(), new Date());
-        const tstPerson: Person = new Person("John", "Smith", "john.smith@dev.com");
+        const tstPerson: Person = new Person("John", "Smith", "");
         let sendResult: any;
         try {
             sendResult = await mail.update(tstPerson, tstPkg);
@@ -51,6 +51,17 @@ describe("Mailer Tests", () => {
         }
     });
 
-
+    it("Should be able to send an email successfully", async () => {
+        const tstPkg: MockPackage = new MockPackage(Guid.create(), new Date());
+        const tstPerson: Person = new Person("John", "Smith", "jyoo980+1@gmail.com");
+        let sendResult: boolean;
+        try {
+            sendResult = await mail.update(tstPerson, tstPkg);
+        } catch (err) {
+            sendResult = err;
+        } finally {
+            expect(sendResult).to.be.true;
+        }
+    });
 
 });

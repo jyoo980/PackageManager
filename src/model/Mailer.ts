@@ -48,7 +48,7 @@ export default class Mailer implements IObserver {
             from: sender,
             to: recipient.getEmail(),
             subject: "A package has arrived for you!",
-            text: `Hi, ${pkg.getFirstName()}. A package arrived for you today at: ${arrivalDate}`,
+            text: `Hi, ${recipient.getFirstName()}. A package arrived for you today at: ${arrivalDate}`,
             replyTo: sender
         };
     }
