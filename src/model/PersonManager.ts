@@ -53,7 +53,7 @@ export default class PersonManager {
     private createPerson(personJson: any): Person {
         const nameArray: string[] = personJson.name.split(" ");
         const packageArray: any[] = personJson.packages;
-        let person = new Person(nameArray[0], nameArray[1]);
+        let person = new Person(nameArray[0], nameArray[1], personJson.email);
         if (packageArray.length != 0) {
             this.readPackages(person, packageArray);
         }

@@ -8,12 +8,14 @@ export default class Person extends Subject {
 
     private readonly firstName: string;
     private readonly lastName: string;
+    private readonly email: string;
     private packages: IPackage[];
 
-    constructor(firstName: string, lastName: string) {
+    constructor(firstName: string, lastName: string, email: string) {
         super();
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
         this.packages = [];
     }
 
@@ -23,6 +25,10 @@ export default class Person extends Subject {
 
     public getLastName(): string {
         return this.lastName;
+    }
+
+    public getEmail(): string {
+        return this.email;
     }
 
     public getPackages(): IPackage[] {

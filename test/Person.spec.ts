@@ -11,14 +11,14 @@ import {DuplicateObserverError} from "../src/model/Subject";
 describe("Person Tests", () => {
 
     let person: Person;
-    const testPkg1: IPackage = new MockPackage(Guid.create(), new Date(), "some.email@gmail.com");
-    const testPkg2: IPackage = new MockPackage(Guid.create(), new Date(), "some.email@gmail.com");
+    const testPkg1: IPackage = new MockPackage(Guid.create(), new Date());
+    const testPkg2: IPackage = new MockPackage(Guid.create(), new Date());
     const obs: IObserver = new MockObserver();
     const firstName: string = "John";
     const lastName: string = "Smith";
 
     try {
-        person = new Person(firstName, lastName);
+        person = new Person(firstName, lastName, "test.person@gmail.com");
     } catch (err) {
         Log.warn(err);
     } finally {

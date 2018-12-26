@@ -43,4 +43,8 @@ export default class Package implements IPackage {
         return this.pickupDate;
     }
 
+    getEmail(): string {
+        return "";
+    }
+
 }

@@ -5,12 +5,10 @@ export class MockPackage implements IPackage {
 
     private readonly id: Guid;
     private readonly testDate: Date;
-    private readonly email: string;
 
-    constructor(id: Guid, testDate: Date, email: string) {
+    constructor(id: Guid, testDate: Date) {
         this.id = id;
         this.testDate = testDate;
-        this.email = email;
     }
 
     public getArrivalDate(): Date {
