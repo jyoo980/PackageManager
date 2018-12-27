@@ -87,7 +87,7 @@ describe("PersonManager Tests", () => {
     it("Should read a person successfully from disk (no prior deliveries)", () => {
         let createPerson: (p: any) => Person;
         createPerson = manager["createPerson"].bind(manager);
-        const expectedPerson: Person = new Person("Bob", "Johnson");
+        const expectedPerson: Person = new Person("Bob", "Johnson", "b.johnson@dev.ca");
         expect(createPerson(testPerson1)).to.deep.equal(expectedPerson);
     });
 

@@ -36,8 +36,8 @@ describe("DeliveryDelegate Test", () => {
     it("Should successfully write a list of Person to disk", async () => {
         let people: Person[] = [];
         let writeResult: any;
-        let p1: Person = new Person("John", "Smith");
-        let p2: Person = new Person("Paul", "Kerry");
+        let p1: Person = new Person("John", "Smith", "jsmith@dev.com");
+        let p2: Person = new Person("Paul", "Kerry", "pkerry@dev.com");
         p1.addPackage(new Package(p1));
         p1.addPackage(new Package(p1));
         people.push(p1);
@@ -48,9 +48,8 @@ describe("DeliveryDelegate Test", () => {
             Log.warn(`DeliveryDelegateSpec::failed to write data with error: ${err}`);
             writeResult = err;
         } finally {
-            //TODO: write an assertion
+            expect(writeResult).to.equal(JSON.stringify(people));
         }
     });
-
 
 });

@@ -5,7 +5,7 @@ import Person from "../src/model/Person";
 
 describe("Package Tests", () => {
 
-    const packageRecipient: Person = new Person("John", "Smith");
+    const packageRecipient: Person = new Person("John", "Smith", "j.smith@dev.ca");
 
     it("Should generate a proper guid", () => {
         let pkg: Package = new Package(packageRecipient);
