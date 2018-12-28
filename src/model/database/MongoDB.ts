@@ -12,15 +12,16 @@ import {Guid} from "guid-typescript";
 
 export default class MongoDB implements IDatabaseClient, IObserver {
 
-    public static readonly dbUrl: string = "mongodb://127.0.0.1:27017/PackageManager";
+    private readonly dbUrl: string = "mongodb://127.0.0.1:27017/PackageManager";
     private collection: any;
     private dbConnection: any;
+    public static readonly tableName: string = "PackageTable";
 
     public async openConnection(url?: string): Promise<any> {
         try {
-            this.dbConnection = await MongoClient.connect((url) ? url : MongoDB.dbUrl, { useNewUrlParser: true });
+            this.dbConnection = await MongoClient.connect((url) ? url : this.dbUrl, { useNewUrlParser: true });
             const db = this.dbConnection.db("Packages");
-            this.collection = db.collection("PackageTable");
+            this.collection = db.collection(MongoDB.tableName);
             return this.collection;
         } catch (err) {
             Log.warn(`MongoDB::Connection error: ${err}`);
