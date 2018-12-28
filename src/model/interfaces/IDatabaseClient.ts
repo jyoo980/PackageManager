@@ -4,6 +4,18 @@ export class DatabaseConnectionError extends Error {
     }
 }
 
+export class DatabaseWriteError extends Error {
+    constructor(...args: any[]) {
+        super(...args);
+    }
+}
+
+export class DatabaseQueryError extends Error {
+    constructor(...args: any[]) {
+        super(...args);
+    }
+}
+
 export default interface IDatabaseClient {
 
     /**

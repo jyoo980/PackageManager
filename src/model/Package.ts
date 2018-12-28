@@ -35,6 +35,9 @@ export default class Package implements IPackage {
     }
 
     public getPickupDate(): Date {
+        if (this.pickupDate === "") {
+            return null;
+        }
         return new Date(this.pickupDate);
     }
 
