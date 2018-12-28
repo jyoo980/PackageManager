@@ -89,9 +89,9 @@ export default class MongoDB implements IDatabaseClient, IObserver {
     }
 
     private generateInsertDocument(pkg: IPackage): any {
-        const guidStr: string = pkg.getId().toString();
+        const primaryKey: string = pkg.getId().toString();
         return {
-            _id: guidStr,
+            _id: primaryKey,
             firstName: pkg.getFirstName(),
             lastName: pkg.getLastName(),
             arrivalDate: pkg.getArrivalDate(),
