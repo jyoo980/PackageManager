@@ -11,7 +11,7 @@ export default class Person extends Subject {
     private readonly email: string;
     private packages: IPackage[];
 
-    constructor(firstName: string, lastName: string, email: string) {
+    constructor(firstName: string, lastName: string, email?: string) {
         super();
         this.firstName = firstName;
         this.lastName = lastName;

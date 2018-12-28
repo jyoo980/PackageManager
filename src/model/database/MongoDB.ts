@@ -9,13 +9,15 @@ import IObserver from "../interfaces/IObserver";
 import IPackage from "../interfaces/IPackage";
 import Person from "../Person";
 import {Guid} from "guid-typescript";
+import Package from "../Package";
+import RecordProcessor from "./RecordProcessor";
 
 export default class MongoDB implements IDatabaseClient, IObserver {
 
+    public static readonly tableName: string = "PackageTable";
     private readonly dbUrl: string = "mongodb://127.0.0.1:27017/PackageManager";
     private collection: any;
     private dbConnection: any;
-    public static readonly tableName: string = "PackageTable";
 
     public async openConnection(url?: string): Promise<any> {
         try {
@@ -73,8 +75,19 @@ export default class MongoDB implements IDatabaseClient, IObserver {
         }
     }
 
+    public async retrieveAllRecords(): Promise<IPackage[]> {
+        let rawResult: any;
+        try {
+            rawResult = await this.collection.find({}).toArray();
+            return RecordProcessor.processRecords(rawResult);
+        } catch (err) {
+            Log.warn(`MongoDB::Failed to retrieve records, error: ${err}`);
+            throw new DatabaseQueryError(`MongoDB::Failed to retrieve records, error: ${err}`);
+        }
+    }
+
     private async insertRecord(pkg: IPackage): Promise<Guid> {
-        const recordDocument = this.generateInsertDocument(pkg);
+        const recordDocument = RecordProcessor.generateInsertDocument(pkg);
         try {
             await this.collection.insertOne(recordDocument);
             return pkg.getId();
@@ -86,7 +99,7 @@ export default class MongoDB implements IDatabaseClient, IObserver {
 
     private async updateRecord(pkg: IPackage): Promise<Guid> {
         const primaryKey: string = pkg.getId().toString();
-        const updateDocument = this.generateUpdateDocument(pkg);
+        const updateDocument = RecordProcessor.generateUpdateDocument(pkg);
         try {
             await this.collection.updateOne({ _id: primaryKey }, updateDocument);
             return pkg.getId();
@@ -96,22 +109,4 @@ export default class MongoDB implements IDatabaseClient, IObserver {
         }
     }
 
-    private generateInsertDocument(pkg: IPackage): any {
-        const primaryKey: string = pkg.getId().toString();
-        return {
-            _id: primaryKey,
-            firstName: pkg.getFirstName(),
-            lastName: pkg.getLastName(),
-            arrivalDate: pkg.getArrivalDate(),
-            pickupDate: pkg.getPickupDate(),
-        }
-    }
-
-    private generateUpdateDocument(pkg: IPackage): any {
-        return {
-            $set: {
-                pickupDate: pkg.getPickupDate()
-            }
-        }
-    }
 }

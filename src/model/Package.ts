@@ -7,15 +7,15 @@ export default class Package implements IPackage {
     private readonly id: Guid;
     private readonly firstName: string;
     private readonly lastName: string;
-    private readonly arrivalDate: string;
-    private pickupDate: string;
+    private readonly arrivalDate: Date;
+    private pickupDate: Date;
 
-    constructor(recipient: Person, id?: Guid, arrivalDate?: string, pickupDate?: string) {
+    constructor(recipient: Person, id?: Guid, arrivalDate?: Date, pickupDate?: Date) {
         this.id = (id) ? id: Guid.create();
         this.firstName = recipient.getFirstName();
         this.lastName = recipient.getLastName();
-        this.arrivalDate = (arrivalDate)? arrivalDate : Date().toLocaleString();
-        this.pickupDate = (pickupDate) ? pickupDate : "";
+        this.arrivalDate = (arrivalDate)? arrivalDate : new Date();
+        this.pickupDate = (pickupDate) ? pickupDate : null;
     }
 
     public getId(): Guid {
@@ -31,23 +31,20 @@ export default class Package implements IPackage {
     }
 
     public getArrivalDate(): Date {
-        return new Date(this.arrivalDate);
+        return this.arrivalDate;
     }
 
     public getPickupDate(): Date {
-        if (this.pickupDate === "") {
-            return null;
-        }
-        return new Date(this.pickupDate);
-    }
-
-    public setPickupDate(date: Date): string {
-        this.pickupDate = date.toLocaleString();
         return this.pickupDate;
     }
 
+    public setPickupDate(date: Date): string {
+        this.pickupDate = date;
+        return this.pickupDate.toLocaleString();
+    }
+
     public isPickedUp(): boolean {
-        return this.pickupDate != "";
+        return this.pickupDate !== null;
     }
 
 }

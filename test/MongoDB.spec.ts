@@ -127,6 +127,31 @@ describe("DatabaseClient Tests", () => {
         }
     });
 
+    it("Should be able to query the DB for all records", async () => {
+        const p1: IPackage = new Package(person);
+        const p2: IPackage = new Package(person);
+        const p3: IPackage = new Package(person);
+        const pkgs: IPackage[] = [p1, p2, p3];
+        try {
+            for (const pkg of pkgs) {
+                await dbClient.update(person, pkg);
+            }
+        } catch (err) {
+            Log.warn(`MongoDB::Failed to insert package with error: ${err}`);
+            expect.fail();
+        }
+        let retrievedResults: IPackage[];
+        try {
+            retrievedResults = await dbClient.retrieveAllRecords();
+        } catch (err) {
+            Log.warn(`MongoDB::Unable to fetch from database, error: ${err}`);
+            retrievedResults = err;
+        } finally {
+            expect(retrievedResults).to.deep.equal(pkgs);
+            pkgs.map((pkg) => dbClient.deleteRecord(pkg.getId()));
+        }
+    });
+
     it("Should be able to successfully close a MongoDB connection", async () => {
         let closeResult: boolean;
         try {
