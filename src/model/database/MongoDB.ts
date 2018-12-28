@@ -85,8 +85,15 @@ export default class MongoDB implements IDatabaseClient, IObserver {
     }
 
     private async updateRecord(pkg: IPackage): Promise<Guid> {
-        // TODO: update the record for a package (assume this is for a package that has been picked up)
-        return Promise.reject("Not implemented");
+        const primaryKey: string = pkg.getId().toString();
+        const updateDocument = this.generateUpdateDocument(pkg);
+        try {
+            await this.collection.updateOne({ _id: primaryKey }, updateDocument);
+            return pkg.getId();
+        } catch (err) {
+            Log.warn(`MongoDB::Database write error likely`);
+            throw err;
+        }
     }
 
     private generateInsertDocument(pkg: IPackage): any {
@@ -97,6 +104,14 @@ export default class MongoDB implements IDatabaseClient, IObserver {
             lastName: pkg.getLastName(),
             arrivalDate: pkg.getArrivalDate(),
             pickupDate: pkg.getPickupDate(),
+        }
+    }
+
+    private generateUpdateDocument(pkg: IPackage): any {
+        return {
+            $set: {
+                pickupDate: pkg.getPickupDate()
+            }
         }
     }
 }

@@ -15,6 +15,7 @@ describe("DatabaseClient Tests", () => {
     let tstDate: Date;
     let tstPkg: IPackage;
     let person: Person;
+    let pickupDate: Date;
 
     before(() => {
         try {
@@ -23,6 +24,7 @@ describe("DatabaseClient Tests", () => {
             tstDate = new Date();
             person = new Person("Jack", "Smith", "j.smith@dev.com");
             tstPkg = new Package(person, tstGuid);
+            pickupDate = new Date();
         } catch (err) {
             Log.warn(`DatabaseClientSpec::Failed to instantiate dbClient with err: ${err}`);
         } finally {
@@ -60,7 +62,7 @@ describe("DatabaseClient Tests", () => {
         try {
             insertResult = await dbClient.update(person, tstPkg);
         } catch (err) {
-            Log.warn(`DeliveryDelegateSpec::Failed to insert package into DB with error: ${err}`);
+            Log.warn(`MongoDB::Failed to insert package into DB with error: ${err}`);
             insertResult = err;
         } finally {
             expect(insertResult).to.be.true;
@@ -68,6 +70,36 @@ describe("DatabaseClient Tests", () => {
     });
 
     it("Should be able to query the DB for the newly received package", async () => {
+        let searchResult: any;
+        try {
+            searchResult = await dbClient.query(tstPkg.getId());
+        } catch (err) {
+            searchResult = err;
+        } finally {
+            expect(searchResult).to.deep.equal({
+                _id: tstPkg.getId().toString(),
+                firstName: tstPkg.getFirstName(),
+                lastName: tstPkg.getLastName(),
+                arrivalDate: tstPkg.getArrivalDate(),
+                pickupDate: null
+            });
+        }
+    });
+
+    it("Should be able to update the newly received package in the DB", async () => {
+        let updateResult: boolean;
+        try {
+            tstPkg.setPickupDate(pickupDate);
+            updateResult = await dbClient.update(person, tstPkg);
+        } catch (err) {
+            Log.warn(`MongoDB::Failed to update package with error: ${err}`);
+            updateResult = err;
+        } finally {
+            expect(updateResult).to.be.true;
+        }
+    });
+
+    it("Should reflect the record with the latest updates in the DB", async () => {
         let searchResult: any;
         try {
             searchResult = await dbClient.query(tstPkg.getId());
