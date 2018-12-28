@@ -32,7 +32,7 @@ export default class RecordProcessor {
         }
     }
 
-    private static getPackage(record: any) {
+    private static getPackage(record: any): IPackage {
         const firstName: string = record.firstName;
         const lastName: string = record.lastName;
         const arrivalDate: Date = record.arrivalDate;
