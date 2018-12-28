@@ -24,22 +24,36 @@ describe("Mailer Tests", () => {
         }
     });
 
-    it("Should generate mail options for a given person and their package", () => {
+    it("Should generate mail options for a given person and a package arrival", () => {
         const tstDate: Date = new Date();
-        const tstPkg: MockPackage = new MockPackage(Guid.create(), tstDate);
+        const tstPkg: MockPackage = new MockPackage(Guid.create(), tstDate, false);
         const tstPerson: Person = new Person("John", "Smith", "john.smith@dev.com");
         const expectedOpts = {
             from: config.transportOpts.auth.user,
             to: tstPerson.getEmail(),
             subject: "A package has arrived for you!",
-            text: `Hi, ${tstPkg.getFirstName()}. A package arrived for you today at: ${tstDate.toLocaleString()}`,
+            text: `Hi, ${tstPkg.getFirstName()}. A package has arrived for you at: ${tstDate.toLocaleString()}`,
+            replyTo: config.transportOpts.auth.user
+        };
+        expect(generateMailOpts(tstPerson, tstPkg)).to.deep.equal(expectedOpts);
+    });
+
+    it("Should generate mail options for a given person and package pickup", () => {
+        const tstDate: Date = new Date();
+        const tstPkg: MockPackage = new MockPackage(Guid.create(), tstDate, true);
+        const tstPerson: Person = new Person("John", "Smith", "john.smith@dev.com");
+        const expectedOpts = {
+            from: config.transportOpts.auth.user,
+            to: tstPerson.getEmail(),
+            subject: "Thanks for picking up your package!",
+            text: `Hi, ${tstPkg.getFirstName()}. Your package was picked up at: ${tstDate.toLocaleString()}`,
             replyTo: config.transportOpts.auth.user
         };
         expect(generateMailOpts(tstPerson, tstPkg)).to.deep.equal(expectedOpts);
     });
 
     it("Should throw a NotificationSendError for an invalid email address", async () => {
-        const tstPkg: MockPackage = new MockPackage(Guid.create(), new Date());
+        const tstPkg: MockPackage = new MockPackage(Guid.create(), new Date(), false);
         const tstPerson: Person = new Person("John", "Smith", "");
         let sendResult: any;
         try {
@@ -52,7 +66,7 @@ describe("Mailer Tests", () => {
     });
 
     it("Should be able to send an email successfully", async () => {
-        const tstPkg: MockPackage = new MockPackage(Guid.create(), new Date());
+        const tstPkg: MockPackage = new MockPackage(Guid.create(), new Date(), false);
         const tstPerson: Person = new Person("John", "Smith", "jyoo980+1@gmail.com");
         let sendResult: boolean;
         try {
@@ -63,5 +77,4 @@ describe("Mailer Tests", () => {
             expect(sendResult).to.be.true;
         }
     });
-
 });

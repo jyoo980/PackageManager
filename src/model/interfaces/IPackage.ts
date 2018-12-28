@@ -34,4 +34,9 @@ export default interface IPackage {
      * @return Date
      */
     getPickupDate(): Date;
+
+    /**
+     * @return true iff the package has been picked up
+     */
+    isPickedUp(): boolean;
 }

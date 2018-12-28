@@ -43,8 +43,8 @@ export default class Package implements IPackage {
         return this.pickupDate;
     }
 
-    getEmail(): string {
-        return "";
+    public isPickedUp(): boolean {
+        return this.pickupDate != "";
     }
 
 }

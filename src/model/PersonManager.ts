@@ -3,15 +3,18 @@ import Log from "../Util";
 import Package from "./Package";
 import {Guid} from "guid-typescript";
 import FileSystem from "./FileSystem";
+import DeliveryDelegate from "./DeliveryDelegate";
 
 export default class PersonManager {
 
     private readonly fileSystem: FileSystem = new FileSystem("./data");
     private readonly validPeople: Person[];
+    private readonly deliveryDelegate: DeliveryDelegate;
     private peopleFileCopy: any;
 
     constructor() {
         this.validPeople = [];
+        this.deliveryDelegate = new DeliveryDelegate(this.fileSystem);
     }
 
     public async isValidPerson(firstName: string, lastName: string): Promise<boolean> {

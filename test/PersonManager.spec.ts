@@ -10,6 +10,7 @@ describe("PersonManager Tests", () => {
     const testPerson1: any = {
         "name": "Bob Johnson",
         "title": "Product Manager",
+        "email": "b.johnson@dev.ca",
         "packages": []
     };
     const testPerson2: any = {

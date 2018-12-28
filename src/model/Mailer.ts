@@ -43,13 +43,29 @@ export default class Mailer implements IObserver {
 
     private generateMailOpts(recipient: Person, pkg: IPackage): any {
         const sender: string = this.mailTransport.options.auth.user;
-        const arrivalDate: string = pkg.getArrivalDate().toLocaleString();
         return {
             from: sender,
             to: recipient.getEmail(),
-            subject: "A package has arrived for you!",
-            text: `Hi, ${recipient.getFirstName()}. A package arrived for you today at: ${arrivalDate}`,
+            subject: this.getSubjectLine(pkg),
+            text: this.getMailText(pkg),
             replyTo: sender
         };
+    }
+
+    private getSubjectLine(pkg: IPackage): string {
+        if (pkg.isPickedUp()) {
+            return  "Thanks for picking up your package!";
+        } else {
+            return `A package has arrived for you!`;
+        }
+    }
+
+    private getMailText(pkg: IPackage) {
+        const pre: string = `Hi, ${pkg.getFirstName()}.`;
+        if (pkg.isPickedUp()) {
+            return `${pre} Your package was picked up at: ${pkg.getPickupDate().toLocaleString()}`;
+        } else {
+            return `${pre} A package has arrived for you at: ${pkg.getArrivalDate().toLocaleString()}`;
+        }
     }
 }
