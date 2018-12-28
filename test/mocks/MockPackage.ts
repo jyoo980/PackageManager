@@ -36,4 +36,8 @@ export class MockPackage implements IPackage {
     public isPickedUp(): boolean {
         return this.pickedUp;
     }
+
+    public setPickupDate(date: Date): string {
+        return "";
+    }
 }

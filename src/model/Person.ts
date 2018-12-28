@@ -44,6 +44,11 @@ export default class Person extends Subject {
         }
     }
 
+    public pickupPackage(pkg: IPackage): IPackage {
+        // TODO:
+        return null;
+    }
+
     public async notifyObservers(pkg: IPackage): Promise<boolean> {
         try {
             for (const observer of this.observers) {

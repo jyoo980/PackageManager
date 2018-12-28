@@ -7,12 +7,13 @@ import {MockPackage} from "./mocks/MockPackage";
 import IObserver from "../src/model/interfaces/IObserver";
 import {MockObserver} from "./mocks/MockObserver";
 import {DuplicateObserverError} from "../src/model/Subject";
+import Package from "../src/model/Package";
 
 describe("Person Tests", () => {
 
     let person: Person;
-    const testPkg1: IPackage = new MockPackage(Guid.create(), new Date());
-    const testPkg2: IPackage = new MockPackage(Guid.create(), new Date());
+    const testPkg1: IPackage = new MockPackage(Guid.create(), new Date(), false);
+    const testPkg2: IPackage = new MockPackage(Guid.create(), new Date(), false);
     const obs: IObserver = new MockObserver();
     const firstName: string = "John";
     const lastName: string = "Smith";
@@ -65,6 +66,15 @@ describe("Person Tests", () => {
         } finally {
             expect(addResult).to.deep.equal([testPkg1, testPkg2]);
         }
+    });
+
+    it("Should be able to pickup a package successfully", () => {
+        const person: Person = new Person("Bob", "Smith", "b.smith@dev.com");
+        const tstDate: Date = new Date();
+        let tstPkg3: IPackage = new Package(person);
+        expect(tstPkg3.isPickedUp()).to.be.false;
+        expect(tstPkg3.setPickupDate(tstDate)).to.equal(tstDate.toLocaleString());
+        expect(tstPkg3.isPickedUp()).to.be.true;
     });
 
     it("Should get a list of packages which have been added for a person", () => {
