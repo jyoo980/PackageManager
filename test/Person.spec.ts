@@ -70,11 +70,9 @@ describe("Person Tests", () => {
 
     it("Should be able to pickup a package successfully", () => {
         const person: Person = new Person("Bob", "Smith", "b.smith@dev.com");
-        const tstDate: Date = new Date();
         let tstPkg3: IPackage = new Package(person);
         expect(tstPkg3.isPickedUp()).to.be.false;
-        expect(tstPkg3.setPickupDate(tstDate)).to.equal(tstDate.toLocaleString());
-        expect(tstPkg3.isPickedUp()).to.be.true;
+        expect(person.pickupPackage(tstPkg3).isPickedUp()).to.be.true;
     });
 
     it("Should get a list of packages which have been added for a person", () => {

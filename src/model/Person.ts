@@ -45,8 +45,8 @@ export default class Person extends Subject {
     }
 
     public pickupPackage(pkg: IPackage): IPackage {
-        // TODO:
-        return null;
+        pkg.setPickupDate(new Date());
+        return pkg;
     }
 
     public async notifyObservers(pkg: IPackage): Promise<boolean> {

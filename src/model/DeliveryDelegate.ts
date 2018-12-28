@@ -30,6 +30,18 @@ export default class DeliveryDelegate {
         }
     }
 
+    public async pickupDelivery(people: Person[], pkg: IPackage): Promise<IPackage> {
+        try {
+            const recipient = this.getMatchedPerson(people, pkg);
+            const pickedUpPkg = recipient.pickupPackage(pkg);
+            await recipient.notifyObservers(pkg);
+            await this.writeDeliveryData(people);
+            return pickedUpPkg;
+        } catch (err) {
+            throw err;
+        }
+    }
+
     public async writeDeliveryData(people: Person[]): Promise<string> {
         try {
             return await this.fileSystem.writeFile(this.deliveryFileName, people);

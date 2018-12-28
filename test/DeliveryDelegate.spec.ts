@@ -65,6 +65,22 @@ describe("DeliveryDelegate Test", () => {
         }
     });
 
+    it("Should successfully allow a person to pick up a package", async () => {
+        let p1: Person = new Person("John", "Smith", "jsmith@dev.com");
+        let people: Person[] = [p1];
+        const packageToAdd: IPackage = new Package(p1);
+        expect(packageToAdd.isPickedUp()).to.be.false;
+        try {
+            await deliveries.pickupDelivery(people, packageToAdd);
+        } catch (err) {
+            Log.warn(`DeliveryDelegateSpec::Failed to pickup package: ${err}`);
+            expect.fail();
+        } finally {
+            expect(packageToAdd.isPickedUp()).to.be.true;
+            expect(packageToAdd.getPickupDate().toLocaleString()).to.not.equal("");
+        }
+    });
+
     it("Should successfully write a list of Person to disk", async () => {
         let people: Person[] = [];
         let writeResult: any;
