@@ -44,13 +44,8 @@ export default class MongoDB implements IDatabaseClient, IObserver {
 
     public async update(subject: Person, pkg: IPackage): Promise<boolean> {
         try {
-            if (pkg.isPickedUp()) {
-                await this.updateRecord(pkg);
-                return true;
-            } else {
-                await this.insertRecord(pkg);
-                 return true;
-            }
+            await (pkg.isPickedUp()) ? this.updateRecord(pkg) : this.insertRecord(pkg);
+            return true;
         } catch (err) {
             Log.warn(`MongoDB::Database write error likely, error: ${err}`);
             throw new DatabaseWriteError(`MongoDB::Database write error likely, error: ${err}`);
