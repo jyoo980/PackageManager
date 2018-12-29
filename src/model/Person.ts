@@ -50,10 +50,9 @@ export default class Person extends Subject {
     }
 
     public async notifyObservers(pkg: IPackage): Promise<boolean> {
+        const observerNotify = this.observers.map((obs) => obs.update(this, pkg));
         try {
-            for (const observer of this.observers) {
-                await observer.update(this, pkg);
-            }
+            await Promise.all(observerNotify);
             return true;
         } catch (err) {
             Log.warn(`Person::Failed to notify observers with error: ${err}`);
