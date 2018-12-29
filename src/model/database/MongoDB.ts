@@ -62,7 +62,7 @@ export default class MongoDB implements IDatabaseClient, IObserver {
             return await this.collection.findOne({ _id: id.toString() });
         } catch (err) {
             Log.warn(`MongoDB::Query error: ${err}`);
-            throw new DatabaseQueryError(`Query failed with error: ${id}`);
+            throw new DatabaseQueryError(`Query failed with error: ${err}`);
         }
     }
 
@@ -71,7 +71,7 @@ export default class MongoDB implements IDatabaseClient, IObserver {
             return await this.collection.deleteOne({ _id: id.toString() });
         } catch (err) {
             Log.warn(`MongoDB::Delete error: ${err}`);
-            throw new DatabaseQueryError(`Query failed with error: ${id}`);
+            throw new DatabaseQueryError(`Query failed with error: ${err}`);
         }
     }
 
