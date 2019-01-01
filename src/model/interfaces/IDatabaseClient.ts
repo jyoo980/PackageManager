@@ -37,4 +37,15 @@ export default interface IDatabaseClient {
      * If a failure occurs, it should throw an error
      */
     closeConnection(): Promise<boolean>;
+
+    /**
+     * Performs a query on the database
+     *
+     * @param key
+     *
+     * @return any
+     *
+     * Retrieves data which matches the given query
+     */
+    query(key: any): Promise<any>;
 }

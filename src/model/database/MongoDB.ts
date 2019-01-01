@@ -52,7 +52,7 @@ export default class MongoDB implements IDatabaseClient, IObserver {
         }
     }
 
-    public async query(id: Guid): Promise<any> {
+    public async query(id: any): Promise<any> {
         try {
             return await this.collection.findOne({ _id: id.toString() });
         } catch (err) {
