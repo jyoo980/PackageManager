@@ -1,8 +1,7 @@
-import IPackage, {DuplicatePackageError} from "./interfaces/IPackage";
+import IPackage from "./interfaces/IPackage";
 import {Guid} from "guid-typescript";
 import Subject from "./Subject";
 import Log from "../Util";
-import {NotificationError} from "./interfaces/IObserver";
 
 export default class Person extends Subject {
 
@@ -32,31 +31,20 @@ export default class Person extends Subject {
     }
 
     public getPackages(): IPackage[] {
-        return this.packages;
+        return null;
     }
 
     public addPackage(pkg: IPackage): IPackage[] {
-        if (!this.packages.includes(pkg)) {
-            this.packages.push(pkg);
-            return this.packages;
-        } else {
-            throw new DuplicatePackageError(`Package with id: ${pkg.getId()} already exists`);
-        }
+        // IGNORE THIS
+        return null;
     }
 
     public pickupPackage(pkg: IPackage): IPackage {
-        pkg.setPickupDate(new Date());
-        return pkg;
+        // IGNORE THIS
+        return null;
     }
 
     public async notifyObservers(pkg: IPackage): Promise<boolean> {
-        const observerNotify = this.observers.map((obs) => obs.update(this, pkg));
-        try {
-            await Promise.all(observerNotify);
-            return true;
-        } catch (err) {
-            Log.warn(`Person::Failed to notify observers with error: ${err}`);
-            throw new NotificationError(`Person::Failed to notify observers with error: ${err}`)
-        }
+        return Promise.reject("IGNORE THIS");
     }
 }

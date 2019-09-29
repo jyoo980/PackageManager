@@ -1,11 +1,3 @@
-import * as fs from "fs";
-
-export class FileSystemError extends Error {
-    constructor(...args: any[]) {
-        super(...args);
-    }
-}
-
 export default class FileSystem {
 
     private fileSystemRoot: string;
@@ -23,45 +15,16 @@ export default class FileSystem {
         return this.fileSystemRoot;
     }
 
-    public readFile(name: string): any {
-        const path: string = this.constructPath(name);
-        return new Promise((resolve, reject) => {
-            fs.readFile(path, "utf-8", (err, content) => {
-                if (!err) {
-                    const contentAsJson = JSON.parse(content);
-                    resolve(contentAsJson);
-                } else {
-                    reject(new FileSystemError(err));
-                }
-            });
-        });
+    public async readFile(name: string): Promise<any> {
+        return Promise.reject("IGNORE THIS")
     }
 
-    public writeFile(name: string, content: any): Promise<string> {
-        const path: string = this.constructPath(name);
-        const dataToWrite = JSON.stringify(content);
-        return new Promise((resolve, reject) => {
-            fs.writeFile(path, dataToWrite, (err) => {
-                if (!err) {
-                    resolve(dataToWrite);
-                } else {
-                    reject(new FileSystemError(err));
-                }
-            });
-        });
+    public async writeFile(name: string, content: any): Promise<string> {
+        return Promise.reject("IGNORE THIS")
     }
 
     public static deleteFile(name: string, rootDir: string): Promise<boolean>  {
-        const path: string = rootDir + "/" + name;
-        return new Promise((resolve, reject) => {
-            fs.unlink(path, (err) => {
-                if (!err) {
-                    resolve(true);
-                } else {
-                    reject(err);
-                }
-            });
-        });
+        return Promise.reject("IGNORE THIS")
     }
 
     private constructPath(fileName: string): string {

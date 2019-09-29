@@ -1,13 +1,7 @@
-import FileSystem, {FileSystemError} from "./FileSystem";
+import FileSystem from "./FileSystem";
 import Person from "./Person";
 import Log from "../Util";
 import IPackage from "./interfaces/IPackage";
-
-export class UnrecognizedPersonError extends Error {
-    constructor(...args: any[]) {
-        super(...args);
-    }
-}
 
 export default class DeliveryDelegate {
 
@@ -19,36 +13,15 @@ export default class DeliveryDelegate {
     }
 
     public async addDelivery(people: Person[], pkg: IPackage): Promise<IPackage[]> {
-        try {
-            const recipient = this.getMatchedPerson(people, pkg);
-            const recipientPackages = recipient.addPackage(pkg);
-            await recipient.notifyObservers(pkg);
-            await this.writeDeliveryData(people);
-            return recipientPackages;
-        } catch (err) {
-            throw err;
-        }
+        return Promise.reject("IGNORE THIS");
     }
 
     public async pickupDelivery(people: Person[], pkg: IPackage): Promise<IPackage> {
-        try {
-            const recipient = this.getMatchedPerson(people, pkg);
-            const pickedUpPkg = recipient.pickupPackage(pkg);
-            await recipient.notifyObservers(pkg);
-            await this.writeDeliveryData(people);
-            return pickedUpPkg;
-        } catch (err) {
-            throw err;
-        }
+        return Promise.reject("IGNORE THIS");
     }
 
     public async writeDeliveryData(people: Person[]): Promise<string> {
-        try {
-            return await this.fileSystem.writeFile(this.deliveryFileName, people);
-        } catch (err) {
-            Log.warn(`DeliveryDelegate::Failed to update records:${err}`);
-            throw new FileSystemError(`DeliveryDelegate::Synchronization Errors Likely, check data on disk`);
-        }
+        return Promise.reject("IGNORE THIS");
     }
 
     public getRecordFileName(): string {
@@ -56,17 +29,13 @@ export default class DeliveryDelegate {
     }
 
     private getMatchedPerson(people: Person[], pkg: IPackage): Person {
-        for (const person of people) {
-            if (this.nameMatches(person, pkg)) {
-                return person;
-            }
-        }
-        throw new UnrecognizedPersonError(`Person with name: ${pkg.getFirstName()} ${pkg.getLastName()} does not exist`);
+        // STUB: Ignore this!
+        return null;
     }
 
     private nameMatches(person: Person, pkg: IPackage): boolean {
-        return person.getFirstName() === pkg.getFirstName()
-            && person.getLastName() === pkg.getLastName();
+        // STUB: Ignore this!
+        return null;
     }
 
 }

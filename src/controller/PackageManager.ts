@@ -1,4 +1,4 @@
-import {IPackageData, IPackageManager} from "./IPackageManager";
+import {IPackageManager} from "./IPackageManager";
 
 export default class PackageManager implements IPackageManager {
 
@@ -10,7 +10,7 @@ export default class PackageManager implements IPackageManager {
         return Promise.reject("Not Implemented");
     }
 
-    listPackages(firstName?: string, lastName?: string): Promise<IPackageData[]> {
+    listPackages(firstName?: string, lastName?: string): Promise<string[]> {
         return Promise.reject("Not Implemented");
     }
 
